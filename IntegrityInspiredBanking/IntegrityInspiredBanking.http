@@ -1,0 +1,54 @@
+@IntegrityInspiredBanking_HostAddress = http://localhost:5005
+@CustomerId = 1
+@AccountId = 4
+@CheckingAccountTypeId = 1
+@SavingsAccountTypeId = 2
+@AccountCreateBalance = 130
+@NewBalanceAmount = 40
+### get user accounts by customerId
+GET {{IntegrityInspiredBanking_HostAddress}}/accounts/{{CustomerId}}
+Accept: application/json
+
+
+### create user account
+POST {{IntegrityInspiredBanking_HostAddress}}/accounts
+Accept: application/json
+Content-Type: application/json
+
+{
+  "CustomerId": {{CustomerId}},
+  "AccountTypeId": {{SavingsAccountTypeId}},
+  "AccountBalance": {{AccountCreateBalance}}
+}
+
+### soft delete user account
+DELETE {{IntegrityInspiredBanking_HostAddress}}/accounts/{{CustomerId}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "CustomerId": {{CustomerId}},
+  "AccountId": {{AccountId}}
+}
+
+### deposit money to user account
+PUT {{IntegrityInspiredBanking_HostAddress}}/accounts/{{CustomerId}}/deposit
+Accept: application/json
+Content-Type: application/json
+
+{
+  "CustomerId": {{CustomerId}},
+  "AccountId": {{AccountId}},
+  "Amount": {{NewBalanceAmount}}
+}
+
+### withdraw money from user account
+PUT {{IntegrityInspiredBanking_HostAddress}}/accounts/{{CustomerId}}/withdraw
+Accept: application/json
+Content-Type: application/json
+
+{
+  "CustomerId": {{CustomerId}},
+  "AccountId": {{AccountId}},
+  "Amount": {{NewBalanceAmount}}
+}
