@@ -1,4 +1,5 @@
-﻿using Api.ResponseMethods;
+﻿using Api.Controllers.Base;
+using Api.ResponseMethods;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Models.Enums;
@@ -7,7 +8,7 @@ using Models.IServices;
 namespace IntegrityInspiredBanking.Controllers;
 [Route("[controller]")]
 [ApiController]
-public class AccountsController : ControllerBase
+public class AccountsController : BaseController
 {
     private readonly IAccountService _accountService;
 
@@ -66,7 +67,8 @@ public class AccountsController : ControllerBase
             return result.Error switch
             {
                 AccountServiceError.BadRequest => BadRequest(),
-                AccountServiceError.AccountNotFound => NotFound(),
+                AccountServiceError.AccountNotFound => NotFound("Account not found."),
+                AccountServiceError.AccountDeleted => NotFound("Account has already been deleted."),
                 AccountServiceError.FundsStillAvailable => BadRequest("Funds are still available in account. Please empty account before closing."),
                 AccountServiceError.FailedToCloseAccount => Problem("Failed to delete account.", statusCode: StatusCodes.Status500InternalServerError)
             };
@@ -86,7 +88,8 @@ public class AccountsController : ControllerBase
             {
                 AccountServiceError.BadRequest => BadRequest(),
                 AccountServiceError.RequestNotValid => BadRequest(),
-                AccountServiceError.AccountNotFound => NotFound(),
+                AccountServiceError.AccountNotFound => NotFound("Account not found."),
+                AccountServiceError.AccountDeleted => NotFound("Account has been deleted."),
                 AccountServiceError.FailedToDepositToAccount => Problem("Failed to deposit money to account.", statusCode: StatusCodes.Status500InternalServerError)
             };
         }
@@ -105,7 +108,8 @@ public class AccountsController : ControllerBase
             {
                 AccountServiceError.BadRequest => BadRequest(),
                 AccountServiceError.RequestNotValid => BadRequest(),
-                AccountServiceError.AccountNotFound => NotFound(),
+                AccountServiceError.AccountNotFound => NotFound("Account not found."),
+                AccountServiceError.AccountDeleted => NotFound("Account has been deleted."),
                 AccountServiceError.FailedToWithdrawFromAccount => Problem("Failed to deposit money to account.", statusCode: StatusCodes.Status500InternalServerError),
                 AccountServiceError.WithdrawalWillOverdraftAccount => BadRequest("Withdrawal will overdraft account. Please try again with a different amount"),
             };

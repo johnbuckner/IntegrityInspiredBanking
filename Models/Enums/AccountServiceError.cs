@@ -10,5 +10,6 @@ public enum AccountServiceError
     FailedToWithdrawFromAccount,
     FundsStillAvailable,
     MissingSavingsAccount,
-    WithdrawalWillOverdraftAccount
+    WithdrawalWillOverdraftAccount,
+    AccountDeleted
 }

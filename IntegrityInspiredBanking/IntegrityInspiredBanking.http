@@ -1,6 +1,6 @@
 @IntegrityInspiredBanking_HostAddress = http://localhost:5005
 @CustomerId = 1
-@AccountId = 4
+@AccountId = 5
 @CheckingAccountTypeId = 1
 @SavingsAccountTypeId = 2
 @AccountCreateBalance = 130
@@ -50,5 +50,5 @@ Content-Type: application/json
 {
   "CustomerId": {{CustomerId}},
   "AccountId": {{AccountId}},
-  "Amount": {{NewBalanceAmount}}
+  "Amount": 30
 }

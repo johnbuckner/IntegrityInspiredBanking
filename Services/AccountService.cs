@@ -66,6 +66,7 @@ public class AccountService : IAccountService
         Account? account = await _accountRepo.GetByCustomerIdAndAccountIdAsync(request.CustomerId, request.AccountId);
 
         if (account is null) return new(AccountServiceError.AccountNotFound);
+        if (!account.IsActive) return new(AccountServiceError.AccountDeleted);
         if (account.AccountBalance != 0) return new(AccountServiceError.FundsStillAvailable);
 
         int recordsUpdated = await _accountRepo.SoftDeleteAccountByIdAsync(account.AccountId);
@@ -83,6 +84,7 @@ public class AccountService : IAccountService
 
         Account? account = await _accountRepo.GetByCustomerIdAndAccountIdAsync(request.CustomerId, request.AccountId);
         if (account is null) return new(AccountServiceError.AccountNotFound);
+        if (!account.IsActive) return new(AccountServiceError.AccountDeleted);
 
         account.AccountBalance += request.Amount;
 
@@ -101,6 +103,7 @@ public class AccountService : IAccountService
 
         Account? account = await _accountRepo.GetByCustomerIdAndAccountIdAsync(request.CustomerId, request.AccountId);
         if (account is null) return new(AccountServiceError.AccountNotFound);
+        if (!account.IsActive) return new(AccountServiceError.AccountDeleted);
 
         account.AccountBalance -= request.Amount;
         if (account.AccountBalance < 0) return new(AccountServiceError.WithdrawalWillOverdraftAccount);
